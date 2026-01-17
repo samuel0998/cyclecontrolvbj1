@@ -3,9 +3,14 @@ from config import Config
 from api.cycles import cycles_bp
 from api.cycle_files import cycle_files_bp
 from api.processing import processing_bp
+from services.scheduler_service import start_scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from jobs.generate_cycle_job import run_cycle_job
 from api.cycle_control import cycle_control_bp
+from api.dashboard import dashboard_bp
+from api.inventory_adjustments import inventory_adjustments_bp
+
+
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +27,9 @@ def create_app():
     app.register_blueprint(cycle_files_bp)
     app.register_blueprint(processing_bp)
     app.register_blueprint(cycle_control_bp)
+    app.register_blueprint(dashboard_bp)
+    app.register_blueprint(inventory_adjustments_bp)
+
     # -----------------------
     # ROTAS PRINCIPAIS (PAGES)
     # -----------------------
@@ -33,7 +41,9 @@ def create_app():
             "cycle_hours": app.config["CYCLE_INTERVAL_HOURS"]
         }
 
-
+    @app.route("/ajuste-inventario")
+    def ajuste_inventario():
+        return render_template("ajuste_inventario.html")
 
     @app.route("/")
     def index():
@@ -67,4 +77,6 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
+    start_scheduler()
     app.run(debug=True)
+

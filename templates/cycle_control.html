@@ -15,36 +15,56 @@
 
 <!-- ================= MODAL ATRIBUIR CONTADOR ================= -->
 <div class="modal fade" id="assignModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">Atribuir Contador</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+      <div class="modal-header">
+        <h5 class="modal-title">👤 Atribuir Contador</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-            <div class="modal-body">
-                <label class="form-label">Login do contador</label>
-                <input
-                    type="text"
-                    id="counterLogin"
-                    class="form-control"
-                    placeholder="Ex: contador01"
-                >
-            </div>
+      <div class="modal-body">
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-                <button class="btn btn-primary" onclick="confirmAssign()">
-                    Confirmar
-                </button>
-            </div>
-
+        <div class="mb-3">
+          <label class="form-label">Login do contador</label>
+          <input
+            type="text"
+            id="counterLogin"
+            class="form-control"
+            placeholder="Ex: contador01"
+            required
+          >
         </div>
+
+        <div class="mb-3">
+          <label class="form-label">ID da contagem (FAAST)</label>
+          <input
+            type="text"
+            id="faastCountId"
+            class="form-control"
+            placeholder="Ex: FAAST-123456"
+            required
+          >
+          <small class="text-muted">
+            ID gerado no FAAST após iniciar a contagem
+          </small>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button class="btn btn-primary" onclick="confirmAssign()">
+          Confirmar
+        </button>
+      </div>
+
     </div>
+  </div>
 </div>
+
 
 <!-- ================= MODAL FINALIZAR CONTAGEM ================= -->
 <div class="modal fade" id="finishModal" tabindex="-1">

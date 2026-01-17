@@ -8,19 +8,18 @@ class ProcessingService:
     @staticmethod
     def process_faast_csv(raw_csv_path, cycle_id):
 
-        print("📊 Iniciando processamento do FAAST")
+        print("📊 Processando FAAST CSV")
         print(f"📄 Arquivo: {raw_csv_path}")
 
         df = pd.read_csv(raw_csv_path)
-
         print(f"📈 Linhas totais: {len(df)}")
 
         # =========================
-        # COLUNAS FIXAS (FAAST)
+        # COLUNAS FAAST (FIXAS)
         # =========================
-        USER_COL = 1        # B
-        SKU_COL = 2         # C
-        ADDRESS_COL = 9     # J
+        USER_COL = 1      # B
+        SKU_COL = 2       # C
+        ADDRESS_COL = 9   # J
 
         if df.shape[1] <= ADDRESS_COL:
             raise Exception(
@@ -33,11 +32,17 @@ class ProcessingService:
             "address": df.iloc[:, ADDRESS_COL]
         })
 
-        # Limpeza
+        # =========================
+        # LIMPEZA
+        # =========================
         data = data.dropna(subset=["user", "address"])
         data["user"] = data["user"].astype(str).str.strip()
         data["sku"] = data["sku"].astype(str).str.strip()
         data["address"] = data["address"].astype(str).str.strip()
+
+        if data.empty:
+            print("⚠️ CSV sem dados válidos")
+            return []
 
         # =========================
         # SAÍDA
@@ -53,9 +58,7 @@ class ProcessingService:
         # =========================
         # AGRUPAR POR USER
         # =========================
-        grouped = data.groupby("user")
-
-        for user, group in grouped:
+        for user, group in data.groupby("user"):
 
             addresses = group["address"].unique()
             skus = group["sku"].unique()
@@ -63,15 +66,12 @@ class ProcessingService:
             if len(addresses) == 0:
                 continue
 
-            # =========================
-            # GERAR CSV FINAL
-            # =========================
             file_name = f"{user}.csv"
             local_path = os.path.join(output_dir, file_name)
 
-            pd.DataFrame(
-                {"ScannableId": addresses}
-            ).to_csv(local_path, index=False)
+            pd.DataFrame({
+                "ScannableId": addresses
+            }).to_csv(local_path, index=False)
 
             print(
                 f"✅ {file_name} | "
@@ -87,6 +87,6 @@ class ProcessingService:
                 "totalSkus": len(skus)
             })
 
-        print(f"🏁 Processamento concluído. Arquivos: {len(results)}")
+        print(f"🏁 Processamento concluído: {len(results)} arquivos")
 
         return results

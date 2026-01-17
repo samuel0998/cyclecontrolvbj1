@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Ajuste de Inventário{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4 text-danger">🛠️ Ajuste de Inventário</h1>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+
+    <h5 class="mb-3">📦 Informações da Contagem</h5>
+
+    <div class="row">
+      <div class="col-md-4">
+        <strong>AA:</strong>
+        <span id="aaLogin">--</span>
+      </div>
+      <div class="col-md-4">
+        <strong>Ciclo:</strong>
+        <span id="cycleId">--</span>
+      </div>
+      <div class="col-md-4">
+        <strong>Arquivo:</strong>
+        <span id="fileName">--</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-md-6">
+        📦 Endereços:
+        <strong id="totalAddresses">0</strong>
+      </div>
+      <div class="col-md-6">
+        🧾 SKUs:
+        <strong id="totalSkus">0</strong>
+      </div>
+    </div>
+
+  </div>
+
+<div class="row" id="adjustments-list">
+    <div class="col-12 text-center text-muted">
+        Carregando ajustes...
+    </div>
+</div>
+
+
+</div>
+
+<!-- ================= HISTÓRICO ================= -->
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+
+    <h5 class="mb-3">🔍 Histórico de Contagens</h5>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Contador</th>
+          <th>FAAST ID</th>
+          <th>Erros</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1ª Contagem</td>
+          <td id="firstCounter">--</td>
+          <td id="firstFaastId">--</td>
+          <td id="firstErrors">--</td>
+        </tr>
+        <tr class="table-danger">
+          <td>2ª Contagem</td>
+          <td id="secondCounter">--</td>
+          <td id="secondFaastId">--</td>
+          <td id="secondErrors">--</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- ================= sla que porra é essa ================= -->
+
+<!-- ================= AÇÕES ================= -->
+
+
+
+<div class="card shadow-sm">
+  <div class="card-body">
+
+    <h5 class="mb-3">⚠️ Ação Administrativa</h5>
+
+    <textarea
+      id="adjustmentNote"
+      class="form-control mb-3"
+      rows="3"
+      placeholder="Observações do ajuste (opcional)"
+    ></textarea>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-success" onclick="finalizeAdjustment(true)">
+        ✅ Ajuste Realizado
+      </button>
+
+      <button class="btn btn-secondary" onclick="finalizeAdjustment(false)">
+        ❌ Não Procede
+      </button>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ajuste_inventario.js') }}"></script>
+{% endblock %}

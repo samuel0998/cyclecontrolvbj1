@@ -75,46 +75,84 @@ async function loadCycleFiles(cycleId) {
 ========================= */
 function renderFileCard(file) {
     const col = document.createElement("div");
+
+    // 🔴 SECOND COUNT = CARD VERMELHO
+    const isSecond = file.countLevel === 2;
+    const cardClass = isSecond ? "border-danger" : "border-secondary";
+
     col.className = "col-md-4 mb-4";
 
     col.innerHTML = `
-        <div class="card shadow-sm h-100">
+        <div class="card shadow-sm h-100 ${cardClass}">
             <div class="card-body">
 
-                <h5 class="card-title">👤 ${file.aaLogin}</h5>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title mb-0">
+                        👤 ${file.aaLogin}
+                    </h5>
+
+                    ${
+                        isSecond
+                        ? `<span class="badge bg-danger">SECOND COUNT</span>`
+                        : `<span class="badge bg-secondary">FIRST COUNT</span>`
+                    }
+                </div>
+
+                <p class="mb-1">📦 Endereços: <strong>${file.totalAddresses}</strong></p>
+                <p class="mb-1">🧾 SKUs: <strong>${file.totalSkus}</strong></p>
 
                 <p class="mb-1">
-                    📦 Endereços: <strong>${file.totalAddresses}</strong>
+                    🆔 FAAST ID:
+                    <strong>${file.faastCountId || "--"}</strong>
                 </p>
 
-                <p class="mb-1">
-                    🧾 SKUs: <strong>${file.totalSkus}</strong>
-                </p>
+                ${
+                    file.firstCounter
+                    ? `<p class="mb-1">👨‍💼 1º Contador: <strong>${file.firstCounter}</strong></p>`
+                    : ""
+                }
 
-                <p class="mb-3">
+                ${
+                    file.countLevel === 2
+                    ? `
+                        <p class="mb-1 text-danger">
+                            ❌ Erros (1ª contagem): <strong>${file.errorsFound}</strong>
+                        </p>
+                    `
+                    : ""
+                }
+
+                <p class="mb-2">
                     📌 Status:
                     <span class="badge bg-${statusColor(file.status)}">
                         ${file.status}
                     </span>
                 </p>
 
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-primary"
+                <div class="d-grid gap-2 mt-3">
+
+                    <button
+                        class="btn btn-outline-primary"
                         onclick="downloadCsv('${file.id}')">
                         ⬇️ Download CSV
                     </button>
 
-                    <button class="btn btn-outline-secondary"
+                    <button
+                        class="btn btn-outline-secondary"
                         onclick="openAssignModal('${file.id}')"
-                        ${file.status !== "PENDENTE" ? "disabled" : ""}>
-                        👤 Atribuir contador
+                        ${file.status !== "PENDENTE" && file.status !== "SECOND_COUNT" ? "disabled" : ""}
+                    >
+                        👤 Atribuir Contador
                     </button>
 
-                    <button class="btn btn-outline-success"
+                    <button
+                        class="btn btn-outline-success"
                         onclick="openFinishModal('${file.id}')"
-                        ${file.status !== "EM_CONTAGEM" ? "disabled" : ""}>
-                        ✅ Finalizar contagem
+                        ${file.status !== "EM_CONTAGEM" ? "disabled" : ""}
+                    >
+                        ✅ Finalizar Contagem
                     </button>
+
                 </div>
 
             </div>
@@ -123,6 +161,7 @@ function renderFileCard(file) {
 
     return col;
 }
+
 
 /* =========================
    STATUS
@@ -141,10 +180,16 @@ function statusColor(status) {
 ========================= */
 function openAssignModal(fileId) {
     selectedFileId = fileId;
+
+    // limpa campos
+    document.getElementById("counterLogin").value = "";
+    document.getElementById("faastCountId").value = "";
+
     new bootstrap.Modal(
         document.getElementById("assignModal")
     ).show();
 }
+
 
 function openFinishModal(fileId) {
     selectedFileId = fileId;
@@ -157,16 +202,36 @@ function openFinishModal(fileId) {
    AÇÕES
 ========================= */
 async function confirmAssign() {
-    const login = document.getElementById("counterLogin").value;
+    const counter = document.getElementById("counterLogin").value.trim();
+    const faastId = document.getElementById("faastCountId").value.trim();
 
-    await fetch(`/api/cycle-files/${selectedFileId}/assign`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ counterUid: login })
-    });
+    if (!counter || !faastId) {
+        alert("⚠️ Informe o login do contador e o ID do FAAST.");
+        return;
+    }
 
+    const res = await fetch(
+        `/api/cycle-files/${selectedFileId}/assign`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                counterUid: counter,
+                faastCountId: faastId
+            })
+        }
+    );
+
+    if (!res.ok) {
+        const err = await res.json();
+        alert("❌ " + (err.error || "Erro ao atribuir contador"));
+        return;
+    }
+
+    alert("✅ Contador atribuído com sucesso");
     location.reload();
 }
+
 
 async function confirmFinish() {
     const errors = document.getElementById("errorCount").value;
@@ -232,4 +297,23 @@ function showError(message) {
             ${message}
         </div>
     `;
+}
+
+
+function downloadCsv(fileId) {
+    fetch(`/api/cycle-files/${fileId}/download`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.url) {
+                alert("Erro ao gerar link de download");
+                return;
+            }
+
+            // Abre download em nova aba
+            window.open(data.url, "_blank");
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Erro ao baixar arquivo");
+        });
 }
