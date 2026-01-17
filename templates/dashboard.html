@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Cycle Control{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">📊 Dashboard – Cycle Control</h1>
+
+<!-- CARDS RESUMO -->
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-primary border-4">
+            <div class="card-body">
+                <h6 class="text-muted">Turno Atual</h6>
+                <h4 id="current-shift">--</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-success border-4">
+            <div class="card-body">
+                <h6 class="text-muted">AAs Auditados</h6>
+                <h4 id="total-aa">0</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-warning border-4">
+            <div class="card-body">
+                <h6 class="text-muted">Itens Processados</h6>
+                <h4 id="total-items">0</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm border-start border-danger border-4">
+            <div class="card-body">
+                <h6 class="text-muted">Ciclos Gerados</h6>
+                <h4 id="total-cycles">0</h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- GRÁFICOS -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Produtividade por AA</h5>
+                <canvas id="aaChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>Status das Contagens</h5>
+                <canvas id="statusChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ÚLTIMOS CICLOS -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="mb-3">Últimos Ciclos Gerados</h5>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Turno</th>
+                    <th>Período</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="cycles-table">
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        Nenhum ciclo carregado
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

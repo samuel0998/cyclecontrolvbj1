@@ -1,0 +1,161 @@
+/* =========================
+   RESET BÁSICO
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.navbar-text {
+    font-size: 0.9rem;
+}
+
+/* =========================
+   CONTEÚDO PRINCIPAL
+========================= */
+main.container {
+    min-height: calc(100vh - 120px);
+}
+
+/* =========================
+   CARDS GERAIS
+========================= */
+.card {
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.card h6 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card h4 {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* =========================
+   CARDS DASHBOARD (TOP)
+========================= */
+.border-start {
+    padding-left: 10px;
+}
+
+/* =========================
+   TABELAS
+========================= */
+.table {
+    background-color: #fff;
+}
+
+.table thead th {
+    background-color: #f1f3f6;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}
+
+/* =========================
+   BADGES DE STATUS
+========================= */
+.badge {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+}
+
+.badge.bg-warning {
+    background-color: #f0ad4e !important;
+}
+
+.badge.bg-success {
+    background-color: #5cb85c !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+.btn {
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+/* =========================
+   GRÁFICOS
+========================= */
+canvas {
+    max-width: 100%;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    font-size: 0.8rem;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    .card h4 {
+        font-size: 1.3rem;
+    }
+
+    .navbar-text {
+        display: none;
+    }
+}
+.cycle-control-footer {
+  margin-top: 40px;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+}
+
+#btnStartCycle {
+  font-size: 18px;
+  padding: 15px 30px;
+}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Cycle Control{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">🧾 Cycle Control</h1>
+
+<div class="row" id="cycle-list">
+    <!-- Os ciclos serão renderizados via JS -->
+    <div class="col-12 text-center text-muted">
+        Carregando ciclos...
+    </div>
+</div>
+
+<!-- ================= MODAL ATRIBUIR CONTADOR ================= -->
+<div class="modal fade" id="assignModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Atribuir Contador</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <label class="form-label">Login do contador</label>
+                <input
+                    type="text"
+                    id="counterLogin"
+                    class="form-control"
+                    placeholder="Ex: contador01"
+                >
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" onclick="confirmAssign()">
+                    Confirmar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL FINALIZAR CONTAGEM ================= -->
+<div class="modal fade" id="finishModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Finalizar Contagem</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <label class="form-label">
+                    Quantidade de erros encontrados
+                </label>
+                <input
+                    type="number"
+                    id="errorCount"
+                    class="form-control"
+                    min="0"
+                >
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button class="btn btn-success" onclick="confirmFinish()">
+                    Finalizar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= FOOTER CYCLE CONTROL ================= -->
+<div class="cycle-control-footer">
+    <button
+        id="btnStartCycle"
+        class="btn btn-primary btn-lg"
+    >
+        🔄 Iniciar Novo Cycle (FAAST)
+    </button>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cycle_control.js') }}"></script>
+{% endblock %}
