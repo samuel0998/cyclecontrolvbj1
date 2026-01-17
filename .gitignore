@@ -1,0 +1,8 @@
+firebase_key.json
+*.key
+*.pem
+*.p12
+*.env
+.env.local
+.env.development
+.env.production
