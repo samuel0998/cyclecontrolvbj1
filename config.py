@@ -1,9 +1,8 @@
 import os
-import json
 from datetime import timedelta
 from dotenv import load_dotenv
 
-# Carrega .env apenas em ambiente local
+# Carrega .env apenas local
 load_dotenv()
 
 
@@ -13,26 +12,19 @@ class Config:
     # =========================
     SECRET_KEY = os.getenv("SECRET_KEY", "cycle-control-secret")
 
-    # =========================
-    # AMBIENTE
-    # =========================
     FLASK_ENV = os.getenv("FLASK_ENV", "development")
     DEBUG = FLASK_ENV == "development"
 
     # =========================
-    # TURNOS / CICLOS
+    # CICLOS
     # =========================
     CYCLE_INTERVAL_HOURS = int(os.getenv("CYCLE_INTERVAL_HOURS", 12))
     TIMEZONE = os.getenv("TIMEZONE", "America/Sao_Paulo")
 
     # =========================
-    # PATHS DO SISTEMA (LOCAL)
+    # PATH BASE
     # =========================
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
-    RAW_FOLDER = os.path.join(UPLOAD_FOLDER, "raw")
-    PROCESSED_FOLDER = os.path.join(UPLOAD_FOLDER, "processed")
 
     # =========================
     # FAAST
@@ -49,19 +41,22 @@ class Config:
     FAAST_DOWNLOAD_FILENAME = "inventoryAudit_VBJ1"
 
     # =========================
-    # 🔥 FIREBASE (RAILWAY READY)
+    # 🔥 FIREBASE (DUAL MODE)
     # =========================
-    # JSON completo do Service Account (Railway)
-    FIREBASE_CREDENTIALS_JSON = os.getenv("FIREBASE_CREDENTIALS_JSON")
 
-    # Bucket
-    FIREBASE_STORAGE_BUCKET = os.getenv(
-        "FIREBASE_STORAGE_BUCKET",
-        "cyclecontrol-af711.firebasestorage.app"
+    # LOCAL → arquivo json
+    FIREBASE_CREDENTIALS_FILE = os.getenv(
+        "FIREBASE_CREDENTIALS",
+        os.path.join(BASE_DIR, "firebase_key.json")
     )
 
+    # PRODUÇÃO (Railway) → variável de ambiente
+    FIREBASE_CREDENTIALS_JSON = os.getenv("FIREBASE_CREDENTIALS_JSON")
+
+    FIREBASE_STORAGE_BUCKET = "cyclecontrol-af711.firebasestorage.app"
+
     # =========================
-    # AUTH / PERFIS
+    # AUTH
     # =========================
     ROLES = {
         "ADMIN": "admin",
@@ -69,7 +64,4 @@ class Config:
         "CONTADOR": "contador"
     }
 
-    # =========================
-    # SESSION
-    # =========================
     PERMANENT_SESSION_LIFETIME = timedelta(hours=12)
