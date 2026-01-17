@@ -1,6 +1,10 @@
-Flask
+flask
+gunicorn
 firebase-admin
+google-cloud-storage
+google-cloud-firestore
+python-dotenv
 pandas
 apscheduler
 selenium
-python-dotenv
+webdriver-manager
